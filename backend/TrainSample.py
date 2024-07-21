@@ -6,7 +6,7 @@ from torchvision.models import densenet201
 from torchvision import transforms
 from torch.utils.data import DataLoader
 from PIL import Image
-from dataset import CustomImageDataset
+from models.dataset import CustomImageDataset
 import torch.nn as nn
 import torch.optim as optim
 from time import time

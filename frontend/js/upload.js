@@ -34,7 +34,7 @@ document.getElementById('upload-form').addEventListener('submit', function(event
     const fileInput = document.getElementById('eye-scan');
     formData.append('eye-scan', fileInput.files[0]);
 
-    fetch('http://localhost:3001/upload', {
+    fetch(/*'http://localhost:3001/upload'*/'http://127.0.0.1:5000/upload', {
         method: 'POST',
         body: formData
     })

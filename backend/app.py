@@ -178,9 +178,10 @@ init_health_routes(app)
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = densenet201(weights=None)
-SAVE_PATH = "densenet201.pth"
+# SAVE_PATH = "densenet201.pth"
+SAVE_PATH = "densenet201.1.pth"
 if os.path.exists(SAVE_PATH):
-    model.load_state_dict(torch.load(SAVE_PATH))
+    model.load_state_dict(torch.load(SAVE_PATH, map_location=device))
 model.to(device)
 model.eval()
 
@@ -208,8 +209,9 @@ def upload_file():
             output = model(img)
             probabilities = torch.nn.functional.softmax(output[0], dim=0)
             confidence, predicted_class = torch.max(probabilities, 0)
-        
         class_names = ["NORMAL", "DRUSEN", "CNV", "DME"]
+        print("Writing Predicted Class Name:")
+        print(predicted_class.item())
         predicted_class_name = class_names[predicted_class.item()]
         
         return jsonify({
