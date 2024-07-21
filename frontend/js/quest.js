@@ -112,7 +112,8 @@
 
 
 
-
+var points = 0;
+var lastReward = null;
 
 
 // Function to handle fetching a random quest
@@ -128,6 +129,29 @@ function fetchRandomQuest() {
         } else {
             const formattedQuest = formatQuestData(data);
             resultDiv.innerHTML = `<p>Random Quest: ${formattedQuest}</p>`;
+        }
+        return data;
+    })
+    .then(data => {
+        const pointsDiv = document.getElementById('points');
+        const statusDiv = document.getElementById('status');
+        if (data.error) {
+            resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+        } else {
+            points += data.points;
+            pointsDiv.innerHTML = `<p>Points: ${points}</p>`;
+        }
+        if (lastReward) {
+            if (lastReward.points_required > points) {
+                statusDiv.innerHTML = "Not Enough Points, Try Again"
+            } else {
+                points -= lastReward.points_required;
+                pointsDiv.innerHTML = `<p>Points: ${points}</p>`;
+                statusDiv.innerHTML = "Congratulations"
+                lastReward = null;
+            }
+        } else {
+            statusDiv.innerHTML = "";
         }
     })
     .catch(error => {
@@ -158,6 +182,24 @@ function fetchRandomReward() {
         } else {
             const formattedReward = formatRewardData(data);
             rewardDiv.innerHTML = `<p>Random Reward: ${formattedReward}</p>`;
+        }
+        return data;
+    })
+    .then(data => {
+        const pointsDiv = document.getElementById('points');
+        const statusDiv = document.getElementById('status')
+        if (data.error) {
+            resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+        } else {
+            if (data.points_required > points) {
+                statusDiv.innerHTML = "Not Enough Points, Try Again"
+                lastReward = data
+            } else {
+                points -= data.points_required;
+                pointsDiv.innerHTML = `<p>Points: ${points}</p>`;
+                statusDiv.innerHTML = "Congratulations"
+                lastReward = null;
+            }
         }
     })
     .catch(error => {
