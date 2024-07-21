@@ -33,4 +33,4 @@ def random_quest():
     quests = list(quest_model.find())
     for quest in quests:
         quest['_id'] = str(quest['_id'])
-    return jsonify(quests[random.randint(0, len(quests))]), 200
+    return jsonify(quests[random.randint(0, len(quests) - 1)]), 200

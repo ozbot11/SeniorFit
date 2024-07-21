@@ -5,6 +5,7 @@ from routes.profile import init_profile_routes
 from routes.exercise import init_exercise_routes
 from routes.health import init_health_routes
 from routes.quest import init_quest_routes
+from routes.reward import init_reward_routes
 import torch
 from torchvision.models import densenet201
 from torchvision import transforms
@@ -21,6 +22,7 @@ init_profile_routes(app)
 init_exercise_routes(app)
 init_health_routes(app)
 init_quest_routes(app)
+init_reward_routes(app)
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = densenet201(weights=None)
