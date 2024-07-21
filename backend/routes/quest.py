@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from models.quest import init_quest_model
+import random
 
 quest_bp = Blueprint('quest', __name__)
 quest_model = None
@@ -26,3 +27,10 @@ def init_quest_routes(app):
     global quest_model
     quest_model = init_quest_model(app)
     app.register_blueprint(quest_bp, url_prefix='/quest')
+
+@quest_bp.route('/random', methods=['GET'])
+def random_quest():
+    quests = list(quest_model.find())
+    for quest in quests:
+        quest['_id'] = str(quest['_id'])
+    return jsonify(quests[random.randint(0, len(quests))]), 200
